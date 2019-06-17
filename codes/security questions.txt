@@ -1,0 +1,137 @@
+
+Security questions
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.Sql;
+using System.Data.SqlClient;
+public partial class User_FrmTransferMoney : System.Web.UI.Page
+{
+    Clsusercardverification OBJ = new Clsusercardverification();
+    ClsUserPatteren objpattern = new ClsUserPatteren();
+    public string SqlinjectionPassvalue;
+    public string SqlinjectionIdValue;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+       
+        if (Session["account_security_question"] != null)
+        {
+            txtcardnumber.Text = Session["account_security_question"].ToString();
+        }
+        else
+        {
+            Response.Redirect("Default.aspx");
+        }
+       
+       
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        SqlInjectionFree();
+        if (SqlinjectionPassvalue == "False" && SqlinjectionIdValue == "False")
+        {
+            if (txtcardnumber.Text == Session["account_security_question"].ToString() && txtnameoncard.Text == Session["account_security_question"].ToString())
+            {
+                Response.Write("<script>alert('Amount tranfered !!!')</script>");
+            }
+            else
+            {
+                objpattern.AddUserForBlock(Session["cardnumber"].ToString(),Session["cardname"].ToString());
+                SqlDataReader dr;
+                dr = objpattern.Checkpatterblockuserc(Session["cardnumber"].ToString(), Session["cardname"].ToString());
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    int count = Convert.ToInt16(dr["emp_status"].ToString());
+                    if (count >= 2)
+                    {
+                        Response.Redirect("Block.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("Default.aspx");
+                    }
+                }
+
+            
+             
+            }
+
+        }
+        else
+        {
+            Response.Write("<script>alert('You are not athorized to access !!!')</script>");
+            Response.Redirect("Default.aspx");
+        }
+    }
+
+
+    public void SqlInjectionFree()
+    {
+        if (txtcardnumber.Text == "admin' --")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "admin' #")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1#")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1/*")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "') or '1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "') or ('1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtnameoncard.Text == "admin' --")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "admin' #")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1#")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1/*")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "') or '1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "') or ('1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else
+        {
+            SqlinjectionPassvalue = "False";
+            SqlinjectionIdValue = "False";
+        }
+    }
+}

@@ -1,0 +1,453 @@
+
+code for two factor authentication, reference number, security questions
+
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.Xml.Linq;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Net;
+using System.Net.Mail;
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Specialized;
+public partial class FactoryLogin : System.Web.UI.Page
+{
+    SerialPort SP = new SerialPort();
+    ClsUserSystemCheck objsystemchk = new ClsUserSystemCheck();
+    Clsuserlogin obj = new Clsuserlogin();
+    ClsUserPatteren objpatteren = new ClsUserPatteren();
+    
+    ClsUpdatesysteminformation objblock = new ClsUpdatesysteminformation();
+    public string SqlinjectionPassvalue = null;
+    public string SqlinjectionIdValue = null;
+    public  string hostName=null;
+    public string myIP = null;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        msglbl.Text = "";
+        Button1.Visible = false;
+    }
+    protected void btnlogin_Click(object sender, EventArgs e)
+    {
+        SqlInjectionFree();
+        if (SqlinjectionIdValue == "true" || SqlinjectionPassvalue == "true")
+        {
+            Response.Write("<script>alert('Either Id Is wrong OR Password Is wrong !!!')</script>");
+        }
+        else
+        {   CheckSystemConfiguration();
+            SqlDataReader systemcheck ;
+            systemcheck = objsystemchk.IfSystemExist(myIP, hostName,txtid.Text.ToString(),txtpass.Text.ToString());
+            if (systemcheck.HasRows)
+            {
+                DataForSession();
+               
+            }
+            else
+            {
+                Response.Write("<script>alert('Sorry You are not Our Bank Employee Just Leave Haking  !!!')</script>");
+            }
+
+        }
+      
+
+
+    }
+    public void Backup()
+    {
+        CheckSystemConfiguration();
+
+
+    }
+    public void DataForSession()
+    {
+        SqlDataReader drlogin;
+        drlogin = obj.Department(txtid.Text.ToString(), txtpass.Text.ToString());
+        if (drlogin.HasRows)
+        {
+            drlogin.Read();
+
+            Session["User_Conatct_Number"] = drlogin["User_Conatct_Number"].ToString();
+            Session["User_Email"] = drlogin["User_Email"].ToString();
+            Session["User_System_Name"] = drlogin["User_System_Name"].ToString();
+            Session["user_name"] = drlogin["user_name"].ToString();
+            Session["counter_number"] = drlogin["counter_number"].ToString();
+            Session["account_number"] = drlogin["account_number"].ToString();
+            
+         
+
+            Pattrenlogin();
+           
+
+        }
+        else
+        {
+
+            Response.Write("<script>alert('Either Id Is wrong OR Password Is wrong !!!')</script>");
+
+        }
+    }
+    public void Loginforpattern()
+    {
+        SqlDataReader dr = null; ;
+          
+            dr = objsystemchk.IfSystemExist(myIP, hostName, txtid.Text.ToString(), txtpass.Text.ToString());
+            if (dr.HasRows)
+            {
+                SqlDataReader drlogin ;
+                drlogin = obj.Department(txtid.Text.ToString(), txtpass.Text.ToString());
+                if (drlogin.HasRows)
+                {
+                    drlogin.Read();
+
+                    Session["User_Conatct_Number"] = drlogin["User_Conatct_Number"].ToString();
+                    Session["User_Email"] = drlogin["User_Email"].ToString();
+                    Session["User_System_Name"] = drlogin["User_System_Name"].ToString();
+                    Session["user_name"] = drlogin["user_name"].ToString();
+                    Session["counter_number"] = drlogin["counter_number"].ToString();
+                    Session["account_number"] = drlogin["account_number"].ToString();
+                    SqlDataReader DR2;
+                    DR2 = objpatteren.FETCHDATAOFCARD(Session["account_number"].ToString());
+                    if (DR2.HasRows)
+                    {
+                        DR2.Read();
+                        Session["data1"] = DR2["Card_Number"].ToString();
+                        Session["data2"] = DR2["Card_Holder_Name"].ToString();
+
+                        SqlDataReader dr1;
+                        dr1 = objpatteren.Checkpatterblockuserc(Session["data1"].ToString(), Session["data2"].ToString());
+                        if (dr1.HasRows)
+                        {
+                            dr1.Read();
+                            int count = Convert.ToInt16(dr1["emp_status"].ToString());
+                            if (count >= 2)
+                            {
+                                Response.Redirect("Block.aspx");
+                            }
+                            else
+                            {
+                                Response.Redirect("Home.aspx");
+                            }
+                        }
+                    }
+                   
+
+                }
+                else
+                {
+
+                    Response.Write("<script>alert('Either Id Is wrong OR Password Is wrong !!!')</script>");
+
+                }
+            }
+            else
+            {
+                Response.Write("<Script>alert('Your System is not valid to use this Appliaction !!!')<>");
+            }
+    }
+    public void Pattrenlogin()
+    {
+        SqlDataReader dr = null;
+        dr = objpatteren.Checkpattern(myIP.ToString(), txtid.Text.ToString());
+        if (dr.HasRows)
+        {
+
+           
+            Loginforpattern();
+
+
+        }
+        else
+        {
+            txtmobile.Enabled = true;
+            txtpemail.Enabled = true;
+            btnlogin.Visible = false;
+            Button1.Visible = true;
+            Button1.Enabled = true;
+            finalCheckup();
+
+
+        }
+    }
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+    }
+    public void SqlInjectionFree()
+    {
+        if (txtpass.Text == "admin' --" )
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "admin' #")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "' or 1=1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "' or 1=1#")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "' or 1=1/*")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "') or '1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtpass.Text == "') or ('1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtid.Text == "admin' --")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "admin' #")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "' or 1=1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "' or 1=1#")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "' or 1=1/*")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "') or '1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtid.Text == "') or ('1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else
+        {
+            SqlinjectionPassvalue = "False";
+            SqlinjectionIdValue = "False";
+        }
+        }
+    public void CheckSystemConfiguration()
+    {
+
+    hostName = Dns.GetHostName(); 
+    myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+   
+
+
+    }
+    public void finalCheckup()
+    {
+    
+        mail();
+       
+
+       
+
+    }
+    public void FinalData()
+
+    {
+
+        int i = Convert.ToInt16(Session["mobileotp"].ToString()); 
+        int j = Convert.ToInt16(Session["emailotp"].ToString());
+        if (Convert.ToInt16(txtmobile.Text) == i && Convert.ToInt16(txtpemail.Text) == j)
+        {
+            SqlDataReader dr;
+            CheckSystemConfiguration();
+            dr = objsystemchk.IfSystemExist(myIP, hostName, txtid.Text.ToString(), txtpass.Text.ToString());
+            if (dr.HasRows)
+            {
+                dr.Read();
+                SqlDataReader drlogin;
+                drlogin = obj.Department(txtid.Text.Replace("'", "").Trim(), txtpass.Text.Replace("'", "").Trim());
+                if (drlogin.HasRows)
+                {
+                    SqlDataReader drblockaccount;
+                    drblockaccount = objpatteren.Checkpatternbloc(txtid.Text.Replace("'", "").Trim(), txtpass.Text.Replace("'", "").Trim());
+                    if (drblockaccount.HasRows)
+                    {
+                        drblockaccount.Read();
+                        Session["blockid"] = drblockaccount["emp_status"].ToString();
+                        int count = Convert.ToInt16(Session["blockid"].ToString());
+                        if (count == 2)
+                        {
+                            Response.Write("<script>alert('Account Blocked Contact your Service Provider!!! !!!')</script>");
+                        }
+                        else
+                        {
+                            drlogin.Read();
+                            CheckSystemConfiguration();
+
+                            Session["User_Conatct_Number"] = drlogin["User_Conatct_Number"].ToString();
+                            Session["User_Email"] = drlogin["User_Email"].ToString();
+                            Session["User_System_Name"] = drlogin["User_System_Name"].ToString();
+                            Session["user_name"] = drlogin["user_name"].ToString();
+                            Session["counter_number"] = drlogin["counter_number"].ToString();
+                            Session["account_number"] = drlogin["account_number"].ToString();
+                            objpatteren.Addpatterndata(myIP.ToString(), "0", txtid.Text.ToString(), "0", "0");
+                            Response.Redirect("Home.aspx");
+                        }
+
+                    }
+                    else
+                    {
+                        drlogin.Read();
+                        CheckSystemConfiguration();
+
+                        Session["User_Conatct_Number"] = drlogin["User_Conatct_Number"].ToString();
+                        Session["User_Email"] = drlogin["User_Email"].ToString();
+                        Session["User_System_Name"] = drlogin["User_System_Name"].ToString();
+                        Session["user_name"] = drlogin["user_name"].ToString();
+                        Session["counter_number"] = drlogin["counter_number"].ToString();
+                        Session["account_number"] = drlogin["account_number"].ToString();
+                        objpatteren.Addpatterndata(myIP.ToString(), "0", txtid.Text.ToString(), "0", "0");
+                        Response.Redirect("Home.aspx");
+                    }
+
+                }
+                else
+                {
+
+                    Response.Write("<script>alert('Either Id Is wrong OR Password Is wrong !!!')</script>");
+
+                }
+            }
+            else
+            {
+                Response.Write("<Script>alert('Your System is not valid to use this Appliaction !!!')<>");
+            }
+        }
+        else
+        {
+            if (Session["emailotp"] != txtpemail.Text)
+            {   
+                
+                objblock.UpdateDataTable(txtid.Text.ToString(),txtpass.Text.ToString(),"Block");
+                SqlDataReader blockdr;
+                blockdr = objblock.GetData(txtid.Text.ToString(), txtpass.Text.ToString());
+                if (blockdr.HasRows)
+                {
+                    blockdr.Read();
+                    int Number = Convert.ToInt16(blockdr["id"].ToString());
+                    if (Number >= 2)
+                    {
+                        Response.Write("<script>alert('Please contact your Branch For login Deatil')</script>");
+                    }
+
+                }
+                else
+                {
+                    Response.Write("<script>alert('Email OTP Not Matched !!!!')</script>");
+                }
+                
+                //logic for update password
+                
+               
+            }
+            else
+            {
+                objblock.UpdateDataTable(txtid.Text.ToString(), txtpass.Text.ToString(), "Block");
+                SqlDataReader blockdr;
+                blockdr = objblock.GetData(txtid.Text.ToString(), txtpass.Text.ToString());
+                if (blockdr.HasRows)
+                {
+                    blockdr.Read();
+                    int Number = Convert.ToInt16(blockdr["id"].ToString());
+                    if (Number >= 2)
+                    {
+                        Response.Write("<script>alert('Please contact your Branch For login Deatil')</script>");
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Mobile OTP Not Matched !!!!')</script>");
+                    }
+
+                }
+
+                Response.Write("<script>alert('Mobile OTP Not Matched !!!!')</script>");
+            }
+        }
+        
+    }
+    public void textsms()
+    {
+        Random random = new Random();
+        int value = random.Next(1001, 9999);
+        string mobile =Session["User_Conatct_Number"].ToString();
+        string destinationaddr = "91" + mobile ;
+        string sendnumber = destinationaddr;
+        string message = "Your OTP Number is " + value + " ( Sent By : Logical Bank )";
+
+        String message1 = HttpUtility.UrlEncode(message);
+
+        using (var wb = new WebClient())
+        {
+            byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
+                {
+                {"apikey" , "9W/iW6NeLtE-UsYjvFzSYYaMr1rnR2oaTKbkpf8IFo"},
+                {"numbers" , destinationaddr},
+                {"message" , message1},
+                {"sender" , "Sushant Srivastva"}
+                });
+            string result = System.Text.Encoding.UTF8.GetString(response);
+            Session["mobileotp"] = value;
+            string emailvalue = Session["emailotp"].ToString(); 
+            Response.Write("<script>alert('Mobile " + Session["mobileotp"] + " and email " + emailvalue+ "')</script>");
+ 
+
+
+
+
+        }
+    }
+    public void mail()
+    {
+        Random random = new Random();
+        int emailvalue = random.Next(1001, 9999);
+
+        MailMessage mail = new MailMessage();
+
+        Session["emailotp"] = emailvalue;
+        mail.To.Add(Session["User_Email"].ToString());
+        mail.From = new MailAddress("naveenjp0145@gmail.com");
+        mail.Subject = "Security Warning!!!!!";
+        string Body = "OTP  '" + emailvalue + "' ";
+        mail.Body = Body;
+        SmtpClient smtp = new SmtpClient();
+        smtp.Host = "smtp.gmail.com";
+        smtp.Port = 587;
+        smtp.UseDefaultCredentials = false;
+        smtp.Credentials = new System.Net.NetworkCredential("naveenjp0145@gmail.com", "123@qwerty");
+        smtp.EnableSsl = true;
+
+        smtp.Send(mail);
+        textsms();
+        
+    }
+
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        FinalData();
+    }
+}

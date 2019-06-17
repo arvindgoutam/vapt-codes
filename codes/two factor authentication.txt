@@ -1,0 +1,193 @@
+Code for generating OTP
+
+using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+using System.Xml.Linq;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Net;
+using System.Net.Mail;
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Specialized;
+public partial class User_FrmTransferMoney : System.Web.UI.Page
+{
+    SerialPort SP = new SerialPort();
+    Clsusercardverification OBJ = new Clsusercardverification();
+    public string SqlinjectionPassvalue;
+    public string SqlinjectionIdValue;
+    public string contact;
+    public string email;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Fetch();
+    }
+
+    public void Fetch()
+    {
+
+        SqlDataReader drfetch = null;
+        drfetch = OBJ.FetchData(Session["cardnumber"].ToString(), Session["cardname"].ToString());
+        if (drfetch.HasRows)
+        {
+            drfetch.Read();
+            contact = drfetch["User_Conatct_Number"].ToString();
+            email = drfetch["User_Email"].ToString();
+           
+            Session["account_refno"]  =drfetch["account_refno"].ToString();
+             Session["account_security_question"]  =drfetch["account_security_question"].ToString();
+           Session["account_security_ans"] =drfetch["account_security_ans"].ToString();
+            txtcardnumber.Text = contact;
+            txtnameoncard.Text = email;
+            
+        }
+        else
+        {
+            Response.Redirect("Default.aspx");
+        }
+    }
+    public void textsms()
+    {
+        Random random = new Random();
+        int value = random.Next(1001, 9999);
+        string mobile = Session["User_Conatct_Number"].ToString();
+        string destinationaddr = "91" + mobile;
+        string sendnumber = destinationaddr;
+        string message = "Your OTP Number is " + value + " ( Sent By : Logical Bank )";
+
+        String message1 = HttpUtility.UrlEncode(message);
+
+        using (var wb = new WebClient())
+        {
+            byte[] response = wb.UploadValues("https://api.textlocal.in/send/", new NameValueCollection()
+                {
+                {"apikey" , "Ub1mPG0NkLg-B6zN0V1RsnT2OsPLjpUzDBdDINnspE"},
+                {"numbers" , destinationaddr},
+                {"message" , message1},
+                {"sender" , "Sushant Srivastva"}
+                });
+            string result = System.Text.Encoding.UTF8.GetString(response);
+            Session["mobileotp"] = value;
+            string emailvalue = Session["emailotp"].ToString();
+            Response.Write("<script>alert('Mobile " + Session["mobileotp"] + " and email " + emailvalue + "')</script>");
+
+
+
+
+
+        }
+    }
+    public void mail()
+    {
+        Random random = new Random();
+        int emailvalue = random.Next(1001, 9999);
+
+        MailMessage mail = new MailMessage();
+
+        Session["emailotp"] = emailvalue;
+        mail.To.Add(Session["User_Email"].ToString());
+        mail.From = new MailAddress("naveenjp0145@gmail.com");
+        mail.Subject = "Security Warning!!!!!";
+        string Body = "OTP  '" + emailvalue + "' ";
+        mail.Body = Body;
+        SmtpClient smtp = new SmtpClient();
+        smtp.Host = "smtp.gmail.com";
+        smtp.Port = 587;
+        smtp.UseDefaultCredentials = false;
+        smtp.Credentials = new System.Net.NetworkCredential("naveenjp0145@gmail.com", "123@qwerty");
+        smtp.EnableSsl = true;
+
+        smtp.Send(mail);
+        textsms();
+
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        SqlInjectionFree();
+        if (SqlinjectionPassvalue == "False" && SqlinjectionIdValue == "False")
+        {
+            mail();
+            Response.Redirect("CvvVerification.aspx");
+
+        }
+        else
+        {
+            Response.Redirect("Default.aspx");
+        }
+    }
+
+
+    public void SqlInjectionFree()
+    {
+        if (txtcardnumber.Text == "admin' --")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "admin' #")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1#")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "' or 1=1/*")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "') or '1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtcardnumber.Text == "') or ('1'='1--")
+        {
+            SqlinjectionPassvalue = "true";
+        }
+        else if (txtnameoncard.Text == "admin' --")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "admin' #")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1#")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "' or 1=1/*")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "') or '1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else if (txtnameoncard.Text == "') or ('1'='1--")
+        {
+            SqlinjectionIdValue = "true";
+        }
+        else
+        {
+            SqlinjectionPassvalue = "False";
+            SqlinjectionIdValue = "False";
+        }
+    }
+}

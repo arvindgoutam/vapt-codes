@@ -1,0 +1,380 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<!-- Mirrored from coderthemes.com/ubold_1.6/light/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Jul 2016 06:37:23 GMT -->
+<head id="Head1"><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc." /><meta name="author" content="Coderthemes" /><link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" /><link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" /><link href="css/style.css" rel="stylesheet" type="text/css" /><link href="css/pages/signin.css" rel="stylesheet" type="text/css" />
+    
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/base.js"></script>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" /><link href="assets/css/core.css" rel="stylesheet" type="text/css" /><link href="assets/css/components.css" rel="stylesheet" type="text/css" /><link href="assets/css/icons.css" rel="stylesheet" type="text/css" /><link href="assets/css/pages.css" rel="stylesheet" type="text/css" /><link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    <script src="assets/js/modernizr.min.js"></script>
+    <script>        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-69506598-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+<title>
+
+</title></head>
+<body class="fixed-left">
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Top Bar Start -->
+        <div class="topbar">
+            <!-- LOGO -->
+            <div class="topbar-left">
+                <div class="text-center">
+                    <a href="#" class="logo"><i class="icon-magnet icon-c-logo"></i><span>Dashb<i
+                        class="md md-album"></i>rd</span></a>
+                </div>
+            </div>
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="">
+                        <div class="pull-left">
+                            <button class="button-menu-mobile open-left">
+                                <i class="ion-navicon"></i>
+                            </button>
+                            <span class="clearfix"></span>
+                        </div>
+                        <form role="search" class="navbar-left app-search pull-left hidden-xs">
+                        <input type="text" placeholder="Search..." class="form-control">
+                        <a href="#"><i class="fa fa-search"></i></a>
+                        </form>
+                        <ul class="nav navbar-nav navbar-right pull-right">
+                            <li class="hidden-xs" style="top: 20px"><a href="#" id="btn-fullscreen" class="waves-effect waves-light">
+                                <i class="icon-size-fullscreen"></i></a></li>
+                            <li class="dropdown" style="top: 10px"><a href="#" class="dropdown-toggle profile"
+                                data-toggle="dropdown" aria-expanded="true">
+                                <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-circle" />
+                            </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)"><i class="ti-power-off m-r-5"></i>Logout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <!-- Top Bar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <!--- Divider -->
+                <div id="sidebar-menu">
+                    <ul>
+                        <li class="text-muted menu-title">Menu</li>
+                        <li class="has_sub"><a href="#" class="waves-effect active"><i class="ti-home">
+                        </i><span>Dash Board</span></a>
+                            <li class="has_sub"><a href="javascript:void(0);" class="waves-effect"><i class="ti-share">
+                            </i><span>Add</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="FrmGenerateEpassBook.aspx"><i class="ti-pencil-alt"></i>e-Pass Book</a></li>
+                                    <li><a href="FrmTransferMoney.aspx"><i class="ti-pencil-alt"></i>
+                                       Balance Tranfer</a></li>
+                                    <li><a href="FrmViewBlance.aspx"><i class="ti-pencil-alt"></i>View Deposit</a></li>
+                                     <li><a href="FrmviewProfile.aspx"><i class="ti-pencil-alt"></i>View Profile</a></li>
+                                    <li><a href="Logout.aspx"><i class="ti-pencil-alt"></i>Logout</a></li>
+                                </ul>
+                            </li>
+                        </li>
+                    </ul>
+                    <div class="clearfix">
+                    </div>
+                </div>
+                <div class="clearfix">
+                </div>
+            </div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="content-page">
+            <!-- Start content -->
+            <div class="content">
+                
+                <!-- container -->
+                
+
+
+    <form method="post" action="#" id="Form1" data-parsley-validate="" novalidate="">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTI5MTIyMTM1Mw9kFgJmD2QWAgIBD2QWAgIBD2QWBAIFDw8WAh4EVGV4dAUKNzY2ODk2MzIyOGRkAgcPDxYCHwAFGGdhdXRhbWFydmluZDkxQGdtYWlsLmNvbWRkZM6mCCRw9lrN4Zr1ve/K8appCNFcXFQn2OAQgl2lOxjB" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/Arvind_Security/WebResource.axd?d=k1QqasICtS568tVJTMFzxw9H6mqzE9GtNuln5w4WeFIdcp1qRVa-P_a9YjrQjOPCrITE4R_PD2gkEe1HXjDRH5BSsyDseS-Eb7aYEVtvMlA1&amp;t=636576782940000000" type="text/javascript"></script>
+
+
+<script src="/Arvind_Security/ScriptResource.axd?d=zexuv73iOvvpD59jcp5oBx_XGwAlVxWh_urf12jIcNIIElVVG3nPPkwJVOx2n7IiPZWruyqH0OpZjdRshR3ScnHio5wS7ouicGzK7H7475rJ3TOfQJOhUvFKLQJuLHmy800PJMWmdKZphLXzsIAAHSv_jri4Zqc37ijLqrxyGyNSPNWO98LMXvHPaXVE6J7f0&amp;t=ffffffffcd368728" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/Arvind_Security/ScriptResource.axd?d=JUpaA0MMJWnUwqIU0q2OnjN_wzuHHcFZoKg2q9Z3Vtx1ABMbmBcgLyo8--R8FxiqNZUVG_FC1nKdWV8vEddzGYq5q-3qNXcGRX2EJtukagBnKRRmee4rXqVkB-xQIjSfvvUxLelrrD0A2N24XaAIoFw5T_a7XOMD5X-hjKcM-Gr3L_9gCCQhAEp-tpws7gcc0&amp;t=ffffffffcd368728" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="D6750786" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAR0s/RkFvV5gtYMI54XaATLdv3+IzajQZ8b6pbCEchNdTzhXC2ixtpycxkTUOmCYuwEj4Rg5XoKKRmif6SMdfPhNkic5dkR7zzSTgMXQPb7tej0nw0LaAq/ZQNtISAdNsc=" />
+</div>
+    <div class="container">
+        <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$Content1$ScriptManager1', 'Form1', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+      
+            <ContentTemplate>
+                <div class="row ">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <i class="icon-user"></i>
+                            <h3>
+                                System Registration
+                            </h3>
+                            <a style="margin-left: 350px;">
+                                <span id="Content1_lblmsg" style="color:Red;"></span>
+                            </a>
+                        </div>
+                        <!-- /widget-header -->
+                        <div class="widget-content">
+                            <div class="row-fluid">
+                                <div class="control-group">
+                                    <div class="form-horizontal">
+                                        <table class="tabbable">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                    <div class="control-group">
+                                                    
+                                                     
+                                                             
+                                                                    <label class="control-label">
+                                                                Mobile Number<span>*</span></label>
+                                                                    <div class="controls">
+                                                                        <input name="ctl00$Content1$txtcardnumber" type="text" value="7668963228" id="Content1_txtcardnumber" disabled="disabled" class="aspNetDisabled text" />
+                                                                      
+                                                                    </div>
+                                                          
+                                                      
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                    <div class="control-group">
+                                                        <label class="control-label">
+                                                           Email<span>*</span></label>
+                                                        <div class="controls">
+                                                            <input name="ctl00$Content1$txtnameoncard" type="text" value="gautamarvind91@gmail.com" id="Content1_txtnameoncard" disabled="disabled" class="aspNetDisabled text" />
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
+                                           
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                        <div class="control-group">
+                                            <label class="control-label">
+                                            </label>
+                                            <div class="controls">
+                                                <input type="submit" name="ctl00$Content1$btnAdd" value="Send OTP" id="Content1_btnAdd" class="button btn btn-success btn-large" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                        <div class="control-group">
+                                            <div class="controls">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </table>
+                                <div class="control-group">
+                                    <div class="row-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div></div>
+            </ContentTemplate>
+      
+    </div>
+    </form>
+
+
+            </div>
+            <!-- content -->
+            <footer class="footer">
+                   
+                </footer>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Right content here -->
+        <!-- ============================================================== -->
+        <!-- Right Sidebar -->
+        <div class="side-bar right-bar nicescroll">
+            <h4 class="text-center">
+                Chat</h4>
+            <div class="contact-list nicescroll">
+                <ul class="list-group contacts-list">
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-1.jpg" alt="">
+                        </div>
+                        <span class="name">Chadengle</span> <i class="fa fa-circle online"></i></a><span
+                            class="clearfix"></span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-2.jpg" alt="">
+                        </div>
+                        <span class="name">Tomaslau</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
+                        </span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-3.jpg" alt="">
+                        </div>
+                        <span class="name">Stillnotdavid</span> <i class="fa fa-circle online"></i></a><span
+                            class="clearfix"></span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-4.jpg" alt="">
+                        </div>
+                        <span class="name">Kurafire</span> <i class="fa fa-circle online"></i></a><span class="clearfix">
+                        </span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-5.jpg" alt="">
+                        </div>
+                        <span class="name">Shahedk</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
+                        </span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-6.jpg" alt="">
+                        </div>
+                        <span class="name">Adhamdannaway</span> <i class="fa fa-circle away"></i></a><span
+                            class="clearfix"></span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-7.jpg" alt="">
+                        </div>
+                        <span class="name">Ok</span> <i class="fa fa-circle away"></i></a><span class="clearfix">
+                        </span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-8.jpg" alt="">
+                        </div>
+                        <span class="name">Arashasghari</span> <i class="fa fa-circle offline"></i></a><span
+                            class="clearfix"></span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-9.jpg" alt="">
+                        </div>
+                        <span class="name">Joshaustin</span> <i class="fa fa-circle offline"></i></a><span
+                            class="clearfix"></span></li>
+                    <li class="list-group-item"><a href="#">
+                        <div class="avatar">
+                            <img src="assets/images/users/avatar-10.jpg" alt="">
+                        </div>
+                        <span class="name">Sortino</span> <i class="fa fa-circle offline"></i></a><span class="clearfix">
+                        </span></li>
+                </ul>
+            </div>
+        </div>
+        <!-- /Right-bar -->
+    </div>
+    <!-- END wrapper -->
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/detect.js"></script>
+    <script src="assets/js/fastclick.js"></script>
+    <script src="assets/js/jquery.slimscroll.js"></script>
+    <script src="assets/js/jquery.blockUI.js"></script>
+    <script src="assets/js/waves.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.nicescroll.js"></script>
+    <script src="assets/js/jquery.scrollTo.min.js"></script>
+    <script src="assets/js/jquery.core.js"></script>
+    <script src="assets/js/jquery.app.js"></script>
+    <!-- jQuery  -->
+    <script src="assets/plugins/moment/moment.js"></script>
+    <script src="assets/plugins/morris/morris.min.js"></script>
+    <script src="assets/plugins/raphael/raphael-min.js"></script>
+    <script src="assets/plugins/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Todojs  -->
+    <script src="assets/pages/jquery.todo.js"></script>
+    <!-- chatjs  -->
+    <script src="assets/pages/jquery.chat.js"></script>
+    <script src="assets/plugins/peity/jquery.peity.min.js"></script>
+    <script src="assets/pages/jquery.dashboard_2.js"></script>
+    <script type="text/javascript" src="assets/plugins/parsleyjs/dist/parsley.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('form').parsley();
+        });
+    </script>
+</body>
+<!-- Mirrored from coderthemes.com/ubold_1.6/light/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Jul 2016 06:37:23 GMT -->
+</html>
